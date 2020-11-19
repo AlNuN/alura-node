@@ -1,10 +1,10 @@
-const { check } = require('express-validator/check');
-
 const BookController = require('../controllers/book-controller');
 const bookController = new BookController();
 
 const BaseController = require('../controllers/base-controller');
 const baseController = new BaseController();
+
+const Book = require('../models/book');
 
 module.exports = (app) => {
   const baseRoutes = BaseController.routes();
@@ -19,12 +19,9 @@ module.exports = (app) => {
   app.get(bookRoutes.edit, bookController.searchId());
 
   app.post(bookRoutes.list,
-    [
-      check('titulo').isLength({min: 5}).withMessage('O título precisa ter no mínimo 5 caracteres'),
-      check('preco').isCurrency().withMessage('O preço precisa ter um valor monetário válido')
-    ],
+    Book.validations(),
     bookController.add()
-   );
+  );
 
   app.put(bookRoutes.list, bookController.update());
 
