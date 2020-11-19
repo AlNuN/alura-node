@@ -6,6 +6,8 @@ const routes = require('../app/routes/routes');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
+const templates = require('../app/views/templates');
+
 const app = express();
 
 app.use('/static', express.static('src/app/public'));
@@ -26,11 +28,11 @@ app.use(methodOverride(function (req, res) {
 routes(app);
 
 app.use((req, resp, next) => resp.status(404).marko(
-  require('../app/views/base/errors/404.marko')
+  templates.base.error404
 ));
 
 app.use((error, req, resp, next) => resp.status(500).marko(
-  require('../app/views/base/errors/500.marko')
+  templates.base.error500
 ));
 
 module.exports = app;
