@@ -4,6 +4,15 @@ const { validationResult } = require('express-validator/check');
 
 class BookController {
 
+  static routes() {
+    return {
+      list: '/livros',
+      add: '/livros/form',
+      edit: '/livros/form/:id',
+      delete: '/livros/:id',
+    }
+  }
+
   list () {
     return (req, resp) => {
     const bookDao = new BookDao(db);
@@ -56,7 +65,7 @@ class BookController {
       }
 
       bookDao.add(req.body)
-        .then(resp.redirect('/livros'))
+        .then(resp.redirect(BookController.routes().list))
         .catch(error => console.log(error));
     }
   }
@@ -67,7 +76,7 @@ class BookController {
       const bookDao = new BookDao(db);
 
       bookDao.update(req.body)
-        .then(resp.redirect('/livros'))
+        .then(resp.redirect(BookController.routes().list))
         .catch(error => console.log(error));
     }
   }
