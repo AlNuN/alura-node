@@ -1,6 +1,7 @@
 require('marko/node-require').install();
 require('marko/express');
 
+const sessionAuth = require('./session-auth');
 const express = require('express');
 const routes = require('../app/routes/routes');
 const bodyParser = require('body-parser');
@@ -24,6 +25,8 @@ app.use(methodOverride(function (req, res) {
     return method;
   }
 }));
+
+sessionAuth(app);
 
 routes(app);
 
